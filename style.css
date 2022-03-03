@@ -1,5 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Inter:wght@400;500;700&family=Montserrat&family=Open+Sans:wght@300;500;600;700&family=Patrick+Hand&family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500&family=Work+Sans:wght@200;300;500;600;700;800&display=swap");
+
+html {
+  font-size: 10px;
+}
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+body {
+  font-family: "Patrick Hand", cursive;
+  background: linear-gradient(to right, #232526, #414345);
+}
+
+header h2 {
+  margin-top: 2%;
+  margin-left: 3%;
+  font-style: italic;
+  font-size: 2rem;
+  color: #c8bebe;
+}
+
+.heading {
+  color: #c8bebe;
+  font-weight: 600;
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 8% auto 25px auto;
+  font-style: italic;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  width: 70%;
+}
+
+form {
+  text-align: center;
+  padding-left: 5px;
+}
+.align-left-icon {
+  width: 20px;
+  height: 20px;
+  /* margin-right: 20px; */
+}
+
+.todo-input {
+  width: 80%;
+  height: 3.8rem;
+  background-color: #252525;
+  border: 1px solid #252525;
+  border-radius: 4px;
+  color: #c8bebe;
+  caret-color: #c8bebe;
+  margin-bottom: 50px;
+  outline: none;
+}
+
+.todo-btn {
+  width: 15%;
+  height: 3.8rem;
+  border: 0.1em solid #252525;
+  border-radius: 4px;
+  font-weight: 300;
+  color: #c8bebe;
+  text-align: center;
+  transition: all 0.2s;
+  background-color: #252525;
+}
+
+.todo-btn:hover {
+  color: #c8bebe;
+  background-color: #25252561;
+}
+
+.content {
+  background-color: #aca4a4;
+  border-radius: 4px;
+}
+
+.todo-list {
+  text-align: center;
+  list-style-type: none;
+  font-size: 3rem;
 }
