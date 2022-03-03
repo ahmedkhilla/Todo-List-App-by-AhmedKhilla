@@ -31,6 +31,15 @@ function addNewTask(e) {
   div.appendChild(removeBtn);
 
   saveToLocalStorage();
+
+  removeBtn.addEventListener('click', removeTask);
+  function removeTask() {
+    flexDiv.remove();
+    taskValues = JSON.parse(localStorage.getItem('keyElements'));
+    let taskIndex = taskValues.indexOf(li.textContent);
+    taskValues.splice(taskIndex, 1);
+    localStorage.setItem('keyElements', JSON.stringify(taskValues));
+  }
   addInput.value = "";
 }
 
@@ -60,6 +69,15 @@ function getTasksOnLoad() {
     const removeBtn = document.createElement('button')
     removeBtn.textContent = 'Remove';
     div.appendChild(removeBtn);
+
+    removeBtn.addEventListener('click', removeTask);
+    function removeTask() {
+      flexDiv.remove();
+      taskValues = JSON.parse(localStorage.getItem('keyElements'));
+      let taskIndex = taskValues.indexOf(li.textContent);
+      taskValues.splice(taskIndex, 1);
+      localStorage.setItem('keyElements', JSON.stringify(taskValues));
+    }
   })
 }
 
