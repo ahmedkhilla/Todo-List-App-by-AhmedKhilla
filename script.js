@@ -40,6 +40,29 @@ function addNewTask(e) {
     taskValues.splice(taskIndex, 1);
     localStorage.setItem('keyElements', JSON.stringify(taskValues));
   }
+
+  editBtn.addEventListener('click', createSaveBtn)
+  function createSaveBtn() {
+    const saveDiv = document.createElement('div');
+    flexDiv.appendChild(saveDiv)
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = 'save';
+    saveDiv.appendChild(saveBtn);
+    const editInput = document.createElement('input');
+    saveDiv.appendChild(editInput)
+    saveBtn.addEventListener('click', taskEdit)
+    function taskEdit() {
+      taskValues = JSON.parse(localStorage.getItem('keyElements'));
+      let taskIndex = taskValues.indexOf(li.textContent);
+      taskValues.splice(taskIndex, 1, editInput.value)
+      li.textContent = editInput.value;
+      localStorage.setItem('keyElements', JSON.stringify(taskValues))
+      editInput.value = "";
+      editInput.remove()
+      saveBtn.remove()
+    }
+  }
+
   addInput.value = "";
 }
 
@@ -77,6 +100,27 @@ function getTasksOnLoad() {
       let taskIndex = taskValues.indexOf(li.textContent);
       taskValues.splice(taskIndex, 1);
       localStorage.setItem('keyElements', JSON.stringify(taskValues));
+    }
+    editBtn.addEventListener('click', createSaveBtn)
+    function createSaveBtn() {
+      const saveDiv = document.createElement('div');
+      flexDiv.appendChild(saveDiv)
+      const saveBtn = document.createElement('button');
+      saveBtn.textContent = 'save';
+      saveDiv.appendChild(saveBtn);
+      const editInput = document.createElement('input');
+      saveDiv.appendChild(editInput)
+      saveBtn.addEventListener('click', taskEdit)
+      function taskEdit() {
+        taskValues = JSON.parse(localStorage.getItem('keyElements'));
+        let taskIndex = taskValues.indexOf(li.textContent);
+        taskValues.splice(taskIndex, 1, editInput.value)
+        li.textContent = editInput.value;
+        localStorage.setItem('keyElements', JSON.stringify(taskValues))
+        editInput.value = "";
+        editInput.remove()
+        saveBtn.remove()
+      }
     }
   })
 }
