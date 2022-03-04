@@ -15,8 +15,11 @@ ToDo List App is designed for people to write list of tasks they need to complet
 
 ## Who Create This App?
 
-This App made and designed by Ahmed Khilla.
+This App made and designed by Ahmed Khilla with a great team of Mohamed El-shorafa and Ali shbair .
 
 ## How do I get the project on my local machine?
 
-In order to have the project in your local machine you need to follow these steps:
+In order to have the project in your local machine you can choose one of the listed method:
+
+-First you can download the whole code from code button above as a zip file.
+-Or a second choice you can clone it by git method you can see the steps [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
