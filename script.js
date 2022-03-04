@@ -9,7 +9,6 @@ let taskValues = [];
 let sum = 0;
 
 // Event Listener 
-
 addButton.addEventListener('click', addNewTask);
 document.addEventListener("DOMContentLoaded", getTasksOnLoad);
 
@@ -19,6 +18,7 @@ function addNewTask(e) {
   if (addInput.value === "") {
     return;
   }
+
   const flexDiv = document.createElement('div');
   todoList.appendChild(flexDiv);
   const li = document.createElement('li')
@@ -32,9 +32,18 @@ function addNewTask(e) {
   const removeBtn = document.createElement('button');
   removeBtn.textContent = 'Remove';
   div.appendChild(removeBtn);
-
+  const containerDiv = document.createElement('div')
+  todoList.appendChild(containerDiv)
   let alertDiv = document.createElement('div');
   todoList.appendChild(alertDiv);
+
+  // add classes 
+  flexDiv.classList.add('flex-div');
+  editBtn.classList.add('btn')
+  editBtn.classList.add('edit-btn')
+  removeBtn.classList.add('btn')
+  li.classList.add('list-text')
+  div.classList.add('right-div')
 
   saveToLocalStorage();
 
@@ -43,6 +52,7 @@ function addNewTask(e) {
     sum = 0;
     flexDiv.remove();
     alertDiv.remove();
+    containerDiv.remove(); // changed
     taskValues = JSON.parse(localStorage.getItem('keyElements'));
     let taskIndex = taskValues.indexOf(li.textContent);
     taskValues.splice(taskIndex, 1);
@@ -54,13 +64,21 @@ function addNewTask(e) {
     if (sum === 0) {
       sum += 1;
       const saveDiv = document.createElement('div');
-      flexDiv.appendChild(saveDiv)
+      containerDiv.appendChild(saveDiv)
+
+      const editInput = document.createElement('input');
+      saveDiv.appendChild(editInput)
       const saveBtn = document.createElement('button');
       saveBtn.textContent = 'save';
       saveDiv.appendChild(saveBtn);
-      const editInput = document.createElement('input');
-      saveDiv.appendChild(editInput)
       saveBtn.addEventListener('click', taskEdit)
+
+      // add classes
+      saveDiv.classList.add('save-flex')
+      editInput.classList.add('edit-input')
+      saveBtn.classList.add('btn')
+      saveBtn.classList.add('save-button')
+      alertDiv.classList.add('alert-div')
 
       function taskEdit() {
         if (sum === 1 && editInput.value !== '') {
@@ -74,13 +92,13 @@ function addNewTask(e) {
           editInput.remove()
           saveBtn.remove()
           alertDiv.textContent = ""
+          saveDiv.remove()
         } else {
           alertDiv.textContent = "the field is empty"
         }
       }
     }
   }
-
   addInput.value = "";
 }
 
@@ -91,7 +109,6 @@ function saveToLocalStorage() {
 }
 
 // create onload function
-
 function getTasksOnLoad() {
   if (localStorage.getItem("keyElements")) {
     taskValues = JSON.parse(localStorage.getItem("keyElements"));
@@ -110,38 +127,52 @@ function getTasksOnLoad() {
     const removeBtn = document.createElement('button')
     removeBtn.textContent = 'Remove';
     div.appendChild(removeBtn);
-
+    const containerDiv = document.createElement('div')
+    todoList.appendChild(containerDiv)
     let alertDiv = document.createElement('div');
     todoList.appendChild(alertDiv);
+
+    // add classes 
+    flexDiv.classList.add('flex-div');
+    editBtn.classList.add('btn')
+    editBtn.classList.add('edit-btn')
+    removeBtn.classList.add('btn')
+    li.classList.add('list-text')
+    div.classList.add('right-div')
 
     removeBtn.addEventListener('click', removeTask);
     function removeTask() {
       sum = 0
       flexDiv.remove();
       alertDiv.remove()
+      containerDiv.remove(); // changed
       taskValues = JSON.parse(localStorage.getItem('keyElements'));
       let taskIndex = taskValues.indexOf(li.textContent);
       taskValues.splice(taskIndex, 1);
       localStorage.setItem('keyElements', JSON.stringify(taskValues));
     }
-
-
     editBtn.addEventListener('click', createSaveBtn)
     function createSaveBtn() {
       if (sum === 0) {
         sum += 1;
         const saveDiv = document.createElement('div');
-        flexDiv.appendChild(saveDiv)
+        containerDiv.appendChild(saveDiv)
+        const editInput = document.createElement('input');
+        saveDiv.appendChild(editInput)
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'save';
         saveDiv.appendChild(saveBtn);
-        const editInput = document.createElement('input');
-        saveDiv.appendChild(editInput)
         saveBtn.addEventListener('click', taskEdit)
-        let alertDiv = document.createElement('div');
-        todoList.appendChild(alertDiv);
+
+        // add classes
+        saveDiv.classList.add('save-flex')
+        editInput.classList.add('edit-input')
+        saveBtn.classList.add('btn')
+        saveBtn.classList.add('save-button')
+        alertDiv.classList.add('alert-div')
+
         function taskEdit() {
-          if (sum === 1 && editInput.value !== "") {
+          if (sum === 1 && editInput.value !== '') {
             sum -= 1
             taskValues = JSON.parse(localStorage.getItem('keyElements'));
             let taskIndex = taskValues.indexOf(li.textContent);
@@ -152,13 +183,13 @@ function getTasksOnLoad() {
             editInput.remove()
             saveBtn.remove()
             alertDiv.textContent = ""
+            saveDiv.remove()
           } else {
-            alertDiv.textContent = "the field is empty"
+            alertDiv.textContent = "The field is empty"
           }
         }
       }
     }
-
   })
 }
 
