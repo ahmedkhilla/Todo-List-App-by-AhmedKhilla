@@ -15,7 +15,7 @@ ToDo List App is designed for people to write list of tasks they need to complet
 
 ## Who Create This App?
 
-This App made and designed by Ahmed Khilla with a great team of Mohamed El-shorafa and Ali shbair .
+This App made and designed by (Ahmed Khilla)[https://github.com/ahmedkhilla] with a great team of Mohammed El-shorafa and Ali shbair .
 
 ## How do I get the project on my local machine?
 
