@@ -80,6 +80,7 @@ form {
   align-items: center;
   margin-bottom: 10px;
   border-radius: 4px;
+  flex-wrap: wrap;
 }
 .btn {
   background-color: #25282b;
@@ -100,6 +101,7 @@ form {
 }
 .list-text {
   margin-left: 3%;
+  overflow: hidden;
 }
 .save-flex {
   display: flex;

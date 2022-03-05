@@ -94,7 +94,7 @@ function addNewTask(e) {
           alertDiv.textContent = ""
           saveDiv.remove()
         } else {
-          alertDiv.textContent = "the field is empty"
+          alertDiv.textContent = "The field is empty"
         }
       }
     }
