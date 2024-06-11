@@ -1,5 +1,4 @@
 "use strict";
-"use strict";
 
 //!  Declarations and Selection of Elements
 const formEl = document.querySelector(".add-tasks");
