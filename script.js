@@ -1,195 +1,133 @@
-'use strict'
+"use strict";
+"use strict";
 
-//  Declration of variables
-const body = document.querySelector('body');
-const addInput = document.querySelector('.todo-input');
-const addButton = document.querySelector('.todo-btn');
-const todoList = document.querySelector('.todo-list');
+//!  Declarations and Selection of Elements
+const formEl = document.querySelector(".add-tasks");
+const addButtonEl = document.querySelector(".add-btn");
+const addInputEl = document.querySelector(".todo-input");
+const tasksContainer = document.querySelector(".tasks");
 let taskValues = [];
-let sum = 0;
 
-// Event Listener 
-addButton.addEventListener('click', addNewTask);
-document.addEventListener("DOMContentLoaded", getTasksOnLoad);
+// Generate random ID Function
+const generateRandomId = () => Math.trunc(Math.random() * 1000000) + 1;
 
-// add button function
-function addNewTask(e) {
-  e.preventDefault();
-  if (addInput.value === "") {
-    return;
+// Save to Local Storage Function
+const saveToLocalStorage = () => {
+  localStorage.setItem("tasks", JSON.stringify(taskValues));
+};
+
+const loadFromLocalStorage = () =>
+  JSON.parse(localStorage.getItem("tasks")) || [];
+
+// Render DOM Elements
+const renderTask = (task) => {
+  const { inputText, id, checkStatus } = task;
+  const isChecked = checkStatus === "true";
+  const lineThroughClass = isChecked ? "line-through" : "";
+  const backgroundColor = isChecked ? "#5529DC" : "#ffffff";
+
+  const taskHtml = `
+    <div class="task" style="background-color: ${backgroundColor}">
+      <div class="left-items">
+        <input
+          type="checkbox"
+          name="task-checkbox"
+          id="checkbox"
+          class="checkbox"
+          checkatt="${checkStatus}"
+          ${isChecked ? "checked" : ""}
+        />
+        <p id="task-text" class="task-text ${lineThroughClass}" data-set="${id}">
+          ${inputText}
+        </p>
+      </div>
+      <div class="right-item display">
+        <svg class="close-btn" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24">
+          <path d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 z"></path>
+        </svg>
+      </div>
+    </div>
+  `;
+  tasksContainer.insertAdjacentHTML("afterbegin", taskHtml);
+};
+
+const initializeTasks = () => {
+  const storedTasks = loadFromLocalStorage();
+  taskValues = storedTasks;
+  storedTasks.forEach(renderTask);
+};
+
+// Add new task
+const addNewTask = () => {
+  const inputText = addInputEl.value.trim();
+  if (!inputText) return;
+
+  const id = generateRandomId();
+  const newTask = { id, checkStatus: "false", inputText };
+
+  taskValues.push(newTask);
+  renderTask(newTask);
+  saveToLocalStorage();
+  addInputEl.value = "";
+};
+
+// Remove task
+const removeTask = (taskElement) => {
+  const taskID = +taskElement.querySelector(".task-text").dataset.set;
+  taskValues = taskValues.filter((task) => task.id !== taskID);
+  saveToLocalStorage();
+  taskElement.remove();
+};
+
+// Toggle task completion
+const toggleTaskCompletion = (checkbox) => {
+  const taskElement = checkbox.closest(".task");
+  const taskID = +checkbox.nextElementSibling.dataset.set;
+  const task = taskValues.find((task) => task.id === taskID);
+
+  if (checkbox.getAttribute("checkatt") === "false") {
+    checkbox.nextElementSibling.classList.add("line-through");
+    taskElement.style.backgroundColor = "#5529DC";
+    checkbox.setAttribute("checkatt", "true");
+    task.checkStatus = "true";
+  } else {
+    checkbox.nextElementSibling.classList.remove("line-through");
+    taskElement.style.backgroundColor = "#ffffff";
+    checkbox.setAttribute("checkatt", "false");
+    task.checkStatus = "false";
   }
-
-  const flexDiv = document.createElement('div');
-  todoList.appendChild(flexDiv);
-  const li = document.createElement('li')
-  li.textContent = addInput.value;
-  flexDiv.appendChild(li);
-  const div = document.createElement('div');
-  flexDiv.appendChild(div);
-  const editBtn = document.createElement('button');
-  editBtn.textContent = 'Edit';
-  div.appendChild(editBtn);
-  const removeBtn = document.createElement('button');
-  removeBtn.textContent = 'Remove';
-  div.appendChild(removeBtn);
-  const containerDiv = document.createElement('div')
-  todoList.appendChild(containerDiv)
-  let alertDiv = document.createElement('div');
-  todoList.appendChild(alertDiv);
-
-  // add classes 
-  flexDiv.classList.add('flex-div');
-  editBtn.classList.add('btn')
-  editBtn.classList.add('edit-btn')
-  removeBtn.classList.add('btn')
-  li.classList.add('list-text')
-  div.classList.add('right-div')
 
   saveToLocalStorage();
+};
 
-  removeBtn.addEventListener('click', removeTask);
-  function removeTask() {
-    sum = 0;
-    flexDiv.remove();
-    alertDiv.remove();
-    containerDiv.remove(); // changed
-    taskValues = JSON.parse(localStorage.getItem('keyElements'));
-    let taskIndex = taskValues.indexOf(li.textContent);
-    taskValues.splice(taskIndex, 1);
-    localStorage.setItem('keyElements', JSON.stringify(taskValues));
+// Event Handlers
+formEl.addEventListener("submit", (e) => {
+  e.preventDefault();
+  addNewTask();
+});
+
+tasksContainer.addEventListener("mouseover", (e) => {
+  if (e.target.closest(".task")) {
+    const closeBtn = e.target.closest(".task").querySelector(".right-item");
+    closeBtn.classList.remove("display");
   }
+});
 
-  editBtn.addEventListener('click', createSaveBtn)
-  function createSaveBtn() {
-    if (sum === 0) {
-      sum += 1;
-      const saveDiv = document.createElement('div');
-      containerDiv.appendChild(saveDiv)
-
-      const editInput = document.createElement('input');
-      saveDiv.appendChild(editInput)
-      const saveBtn = document.createElement('button');
-      saveBtn.textContent = 'save';
-      saveDiv.appendChild(saveBtn);
-      saveBtn.addEventListener('click', taskEdit)
-
-      // add classes
-      saveDiv.classList.add('save-flex')
-      editInput.classList.add('edit-input')
-      saveBtn.classList.add('btn')
-      saveBtn.classList.add('save-button')
-      alertDiv.classList.add('alert-div')
-
-      function taskEdit() {
-        if (sum === 1 && editInput.value !== '') {
-          sum -= 1
-          taskValues = JSON.parse(localStorage.getItem('keyElements'));
-          let taskIndex = taskValues.indexOf(li.textContent);
-          taskValues.splice(taskIndex, 1, editInput.value)
-          li.textContent = editInput.value;
-          localStorage.setItem('keyElements', JSON.stringify(taskValues))
-          editInput.value = "";
-          editInput.remove()
-          saveBtn.remove()
-          alertDiv.textContent = ""
-          saveDiv.remove()
-        } else {
-          alertDiv.textContent = "The field is empty"
-        }
-      }
-    }
+tasksContainer.addEventListener("mouseout", (e) => {
+  if (e.target.closest(".task")) {
+    const closeBtn = e.target.closest(".task").querySelector(".right-item");
+    closeBtn.classList.add("display");
   }
-  addInput.value = "";
-}
+});
 
-// Save tasks into local storage
-function saveToLocalStorage() {
-  taskValues.push(addInput.value);
-  localStorage.setItem('keyElements', JSON.stringify(taskValues))
-}
-
-// create onload function
-function getTasksOnLoad() {
-  if (localStorage.getItem("keyElements")) {
-    taskValues = JSON.parse(localStorage.getItem("keyElements"));
+tasksContainer.addEventListener("click", (e) => {
+  if (e.target.closest(".close-btn")) {
+    const taskElement = e.target.closest(".task");
+    removeTask(taskElement);
+  } else if (e.target.classList.contains("checkbox")) {
+    toggleTaskCompletion(e.target);
   }
-  taskValues.forEach((e) => {
-    const flexDiv = document.createElement('div');
-    todoList.appendChild(flexDiv);
-    const li = document.createElement('li')
-    li.textContent = e;
-    flexDiv.appendChild(li);
-    const div = document.createElement('div');
-    flexDiv.appendChild(div);
-    const editBtn = document.createElement('button');
-    editBtn.textContent = 'Edit';
-    div.appendChild(editBtn);
-    const removeBtn = document.createElement('button')
-    removeBtn.textContent = 'Remove';
-    div.appendChild(removeBtn);
-    const containerDiv = document.createElement('div')
-    todoList.appendChild(containerDiv)
-    let alertDiv = document.createElement('div');
-    todoList.appendChild(alertDiv);
+});
 
-    // add classes 
-    flexDiv.classList.add('flex-div');
-    editBtn.classList.add('btn')
-    editBtn.classList.add('edit-btn')
-    removeBtn.classList.add('btn')
-    li.classList.add('list-text')
-    div.classList.add('right-div')
-
-    removeBtn.addEventListener('click', removeTask);
-    function removeTask() {
-      sum = 0
-      flexDiv.remove();
-      alertDiv.remove()
-      containerDiv.remove(); // changed
-      taskValues = JSON.parse(localStorage.getItem('keyElements'));
-      let taskIndex = taskValues.indexOf(li.textContent);
-      taskValues.splice(taskIndex, 1);
-      localStorage.setItem('keyElements', JSON.stringify(taskValues));
-    }
-    editBtn.addEventListener('click', createSaveBtn)
-    function createSaveBtn() {
-      if (sum === 0) {
-        sum += 1;
-        const saveDiv = document.createElement('div');
-        containerDiv.appendChild(saveDiv)
-        const editInput = document.createElement('input');
-        saveDiv.appendChild(editInput)
-        const saveBtn = document.createElement('button');
-        saveBtn.textContent = 'save';
-        saveDiv.appendChild(saveBtn);
-        saveBtn.addEventListener('click', taskEdit)
-
-        // add classes
-        saveDiv.classList.add('save-flex')
-        editInput.classList.add('edit-input')
-        saveBtn.classList.add('btn')
-        saveBtn.classList.add('save-button')
-        alertDiv.classList.add('alert-div')
-
-        function taskEdit() {
-          if (sum === 1 && editInput.value !== '') {
-            sum -= 1
-            taskValues = JSON.parse(localStorage.getItem('keyElements'));
-            let taskIndex = taskValues.indexOf(li.textContent);
-            taskValues.splice(taskIndex, 1, editInput.value)
-            li.textContent = editInput.value;
-            localStorage.setItem('keyElements', JSON.stringify(taskValues))
-            editInput.value = "";
-            editInput.remove()
-            saveBtn.remove()
-            alertDiv.textContent = ""
-            saveDiv.remove()
-          } else {
-            alertDiv.textContent = "The field is empty"
-          }
-        }
-      }
-    }
-  })
-}
-
+// Initialize tasks on page load
+window.addEventListener("load", initializeTasks);
